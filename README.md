@@ -38,9 +38,6 @@ Resumes are scraped using Selenium with the Chrome WebDriver. The process involv
 
 This scraping process ensures the collection of a diverse and extensive dataset that represents various sectors in the job market, suitable for training our classification models.
 
-### Note on Data Collection Ethics
-This data is used strictly for educational purposes in the context of this project. Ensure compliance with LiveCareer.com’s terms of service regarding data scraping and use.
-
 ### Data Structure
 The resulting dataset comprises columns for `Resume` text and the corresponding `Category`. It's stored in a CSV file to facilitate easy access and manipulation for training machine learning models.
 
