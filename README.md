@@ -1,96 +1,68 @@
-# Resume-Classification
-Certainly! Below is a structured README.md template for your GitHub project repository. This template includes Markdown formatting to ensure it displays correctly on GitHub:
+# Resume Classifier Project
 
-```markdown
-# Flower Prediction and Gardening Assistant
-
-## Project Overview
-This project aims to create a flower prediction and gardening assistant utilizing machine learning models and a dataset of over 4000 flower images across five different species. The tool assists users in identifying flowers and provides detailed care instructions.
+This project develops a machine learning model to classify resumes into categories based on the job descriptions. It utilizes several algorithms like Support Vector Machine (SVM), Multinomial Naive Bayes, Random Forest, and DistilBERT to achieve this.
 
 ## Table of Contents
 - [Installation](#installation)
-- [Dataset](#dataset)
+- [Data](#data)
 - [Usage](#usage)
-- [Project Structure](#project-structure)
+- [Models](#models)
+- [Performance](#performance)
 - [Contributing](#contributing)
 - [License](#license)
-- [Credits](#credits)
 
 ## Installation
 
-To get started with this project, clone this repository and install the required dependencies.
+To set up this project locally, follow these steps:
 
 ```bash
-git clone https://github.com/yourusername/flower-prediction-project.git
-cd flower-prediction-project
+git clone https://github.com/yourusername/resume-classifier.git
+cd resume-classifier
 pip install -r requirements.txt
 ```
 
-## Dataset
+## Data
 
-The project uses two main datasets:
-1. **Flower Dataset**: A collection of 4000+ images of flowers across five categories stored in `image_data/`. This includes a `labels` text file for classification.
-2. **About.csv**: Contains gardening details about each flower type, including care instructions and environmental needs.
+The dataset for this project is collected by scraping resume data from [LiveCareer.com](https://www.livecareer.com). Approximately 8,350 resumes are collected across 10 job categories including Python Developer, Java Developer, Web Developer, Database Administrator, Security Analyst, Project Manager, Frontend Developer, Network Administrator, and Software Developer.
 
-Data is stored and managed on Google Cloud Platform (GCP), ensuring data integrity and availability.
+### Data Collection Process
+
+Resumes are scraped using Selenium with the Chrome WebDriver. The process involves navigating to specific URLs constructed for each job category and extracting links to individual resumes. Here’s a brief outline of the steps involved in the scraping process:
+
+1. **Set up Selenium WebDriver**: Configure Selenium with ChromeDriver to interact with web pages.
+2. **Navigate through job categories**: For each category, generate URLs to navigate through pages of listings on LiveCareer.com.
+3. **Extract resume links**: Collect the href attribute of each resume link on the listing pages.
+4. **Visit each resume link**: For each extracted link, navigate to the corresponding page to access the full resume.
+5. **Extract resume text**: Parse the HTML content of each resume page to extract the textual data.
+6. **Store data**: Save the collected resume texts and their corresponding categories to a DataFrame, then export to a CSV file named `Resume.csv`.
+
+This scraping process ensures the collection of a diverse and extensive dataset that represents various sectors in the job market, suitable for training our classification models.
+
+### Note on Data Collection Ethics
+This data is used strictly for educational purposes in the context of this project. Ensure compliance with LiveCareer.com’s terms of service regarding data scraping and use.
+
+### Data Structure
+The resulting dataset comprises columns for `Resume` text and the corresponding `Category`. It's stored in a CSV file to facilitate easy access and manipulation for training machine learning models.
+
 
 ## Usage
 
-To run the flower prediction model:
+To run the classification:
 
-```bash
-python predict.py --image_path '<path_to_image>'
+```python
+python resume_classifier.py
 ```
 
-To access gardening tips, navigate to:
+This script will execute the data preprocessing, model training, and output the classification accuracy of each model.
 
-```bash
-python gardening_tips.py --flower_name '<flower_name>'
-```
+## Models
 
-## Project Structure
+This project includes several classification models:
+- **Support Vector Machine (SVM)**: Used for high accuracy in categorical classification.
+- **Multinomial Naive Bayes**: Effective for word counts or frequency data.
+- **Random Forest**: Provides a good benchmark for complex classification tasks.
+- **DistilBERT**: Not implemented in the project's current scope but recommended for future scaling to handle contextual embeddings from text data.
 
-```
-flower-prediction-project/
-│
-├── src/              # Source files for the project
-│   ├── predict.py    # Script for predicting flower type
-│   ├── gardening_tips.py  # Script for fetching gardening tips
-│
-├── data/
-│   ├── image_data/   # Folder containing flower images
-│   ├── about.csv     # Gardening details for each flower
-│
-├── models/           # Trained model files
-│
-├── notebooks/        # Jupyter notebooks for exploration and presentations
-│
-├── requirements.txt  # The requirements file for reproducing the analysis environment
-│
-└── README.md         # The top-level README for developers using this project
-```
+## Performance
 
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-To contribute to the project, please follow these steps:
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-## Credits
-
-- TensorFlow - For providing the flower dataset.
-- Google Cloud Platform - For data hosting and management solutions.
-- All contributors who participate in this project.
-```
-
-This README.md file provides a detailed and structured overview of your project, instructions for installation, usage, and contributions, all formatted for GitHub. You can adjust sections such as "Credits" and "Contributing" according to your project's specifics and team norms.
+The models are evaluated based on accuracy, precision, recall, and F1-score. Random Forest showed a significant performance with an accuracy of 83%, followed by SVM at 88% and Multinomial Naive Bayes at 79% and DistilBERT at 93%.
